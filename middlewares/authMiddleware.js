@@ -17,4 +17,14 @@ const authMiddleware = async (req, res, next) => {
   }
 };
 
-module.exports = {authMiddleware}
+const roleMiddleware = (role) => {
+  return (req, res, next) => {
+    if (role !== req.user.role) {
+      return res.status(403).json({error: `${role} role required to access this`})
+    } else {
+      next();
+    }
+  }
+}
+
+module.exports = {authMiddleware, roleMiddleware}
